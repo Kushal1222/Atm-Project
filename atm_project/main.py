@@ -28,9 +28,7 @@ def main():
             print("----------------------------------------")
             print("✅ Login Successful!")
             print(f"Welcome back, {current_account['holder_name']}!")
-            print(f"Last Login : {current_account['last_login']}")
             print("----------------------------------------")
-            current_account['last_login'] = datetime.now().strftime("%Y-%m-%d  %I:%M %p")
             break
         else:
             attempts += 1
@@ -49,8 +47,8 @@ def main():
         choice_str = input("Enter your choice: ")
         try:
             choice = int(choice_str)
-            if choice < 1 or choice > 7:
-                print("❌ Invalid choice! Enter a number between 1 and 7.")
+            if choice < 1 or choice > 6:
+                print("❌ Invalid choice! Enter a number between 1 and 6.")
                 continue
         except ValueError:
             print("❌ Invalid input! Please try again.")
@@ -71,8 +69,6 @@ def main():
         elif choice == 5:
             transactions.mini_statement(data.transactions[current_account['account_number']])
         elif choice == 6:
-            transactions.change_pin(current_account)
-        elif choice == 7:
             dt_str = datetime.now().strftime("%I:%M %p")
             print("========================================")
             print("👋 Thank you for using PyBank ATM!")
