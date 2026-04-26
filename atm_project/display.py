@@ -1,19 +1,13 @@
 # Functions for displaying menus, banners, receipts, and formatting boxes
 
-from datetime import datetime
-from utils import typing_effect
-
 def show_banner():
-    typing_effect("W e l c o m e   t o   P y B a n k   A T M . . .")
+    print("W e l c o m e   t o   P y B a n k   A T M . . .")
     print("========================================")
     print("     🏦  PyBank ATM  🏦")
     print("     India's Smart Virtual ATM")
     print("========================================")
 
 def show_menu():
-    dt_str = datetime.now().strftime("%d-%m-%Y  %I:%M %p")
-    print("========================================")
-    print(f"📅 Date & Time : {dt_str}")
     print("========================================")
     print("       🏧  PyBank ATM - MENU")
     print("========================================")
@@ -21,9 +15,8 @@ def show_menu():
     print("  2. Deposit Money")
     print("  3. Withdraw Money")
     print("  4. View Full Statement")
-    print("  5. Mini Statement  (Last 3 transactions)")
-    print("  6. Change PIN")
-    print("  7. Exit")
+    print("  5. Mini Statement")
+    print("  6. Exit")
     print("========================================")
 
 def show_receipt(txn):
