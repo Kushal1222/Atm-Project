@@ -1,7 +1,7 @@
 # Functions handling core business logic for ATM transactions (deposit, withdraw, statement etc)
 
 from datetime import datetime
-from utils import generate_txn_id, get_valid_amount, get_confirmation, typing_effect
+from utils import generate_txn_id, get_valid_amount, get_confirmation
 from display import show_receipt, print_box
 
 def deposit(account, transactions, counter):
@@ -28,7 +28,6 @@ def deposit(account, transactions, counter):
 
 def withdraw(account, transactions, counter, daily_withdrawn):
     DAILY_LIMIT = 10000
-    LOW_BALANCE_LIMIT = 1000
     
     amount = get_valid_amount("Enter amount to withdraw: ")
     if not get_confirmation(f"Are you sure you want to withdraw Rs. {amount}? (y/n): "):
@@ -49,12 +48,7 @@ def withdraw(account, transactions, counter, daily_withdrawn):
     daily_withdrawn = daily_withdrawn + amount
     
     print("✅ Withdrawal Successful!")
-    remaining = DAILY_LIMIT - daily_withdrawn
-    print(f"💰 Remaining daily limit : Rs. {remaining}")
     
-    if account['balance'] < LOW_BALANCE_LIMIT:
-        print(f"⚠️  Low Balance Warning! Your balance is below Rs. {LOW_BALANCE_LIMIT:,}.")
-        
     txn_id = generate_txn_id(counter)
     counter += 1
     
@@ -114,20 +108,3 @@ def mini_statement(transactions):
         print(f"  {i} | {txn['txn_id']} | {txn['type']} | Rs.{txn['amount']} | {txn['date']} | Rs.{txn['balance']}")
         
     print("---------------------------------------------------------------")
-
-def change_pin(account):
-    while True:
-        old_pin = input("Enter old PIN: ")
-        if old_pin != account['pin']:
-            print("❌ Incorrect PIN! PIN change failed.")
-            return
-            
-        new_pin = input("Enter new PIN (4 digits): ")
-        confirm_pin = input("Confirm new PIN: ")
-        
-        if new_pin != confirm_pin:
-            print("❌ PINs do not match! Try again.")
-        else:
-            account['pin'] = new_pin
-            print("✅ PIN changed successfully!")
-            break
