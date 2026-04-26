@@ -1,7 +1,5 @@
 # Utility functions for common operations like validation, confirmation, and formatting
 
-import time
-
 def validate_amount(amount):
     # Check if amount is a valid number and greater than 100
     try:
@@ -22,12 +20,6 @@ def find_account(account_number, accounts):
         if acc["account_number"] == account_number:
             return acc
     return None
-
-def typing_effect(text):
-    for char in text:
-        print(char, end="", flush=True)
-        time.sleep(0.02)
-    print()
 
 def generate_txn_id(counter):
     return f"PYB-{counter:04d}"
