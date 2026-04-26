@@ -59,9 +59,13 @@ def main():
         if choice == 1:
             display.show_account_details(current_account)
         elif choice == 2:
-            data.txn_counter = transactions.deposit(current_account, data.transactions[current_account['account_number']], data.txn_counter)
+            acc_no = current_account['account_number']
+            acc_txns = data.transactions[acc_no]
+            data.txn_counter = transactions.deposit(current_account, acc_txns, data.txn_counter)
         elif choice == 3:
-            data.txn_counter, data.daily_withdrawn = transactions.withdraw(current_account, data.transactions[current_account['account_number']], data.txn_counter, data.daily_withdrawn)
+            acc_no = current_account['account_number']
+            acc_txns = data.transactions[acc_no]
+            data.txn_counter, data.daily_withdrawn = transactions.withdraw(current_account, acc_txns, data.txn_counter, data.daily_withdrawn)
         elif choice == 4:
             transactions.view_statement(data.transactions[current_account['account_number']], current_account)
         elif choice == 5:

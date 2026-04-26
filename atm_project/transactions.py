@@ -10,7 +10,7 @@ def deposit(account, transactions, counter):
         print("Transaction cancelled.")
         return counter
 
-    account['balance'] += amount
+    account['balance'] = account['balance'] + amount
     txn_id = generate_txn_id(counter)
     counter += 1
     
@@ -45,11 +45,12 @@ def withdraw(account, transactions, counter, daily_withdrawn):
         print(f"⚠️  Daily withdrawal limit of Rs. {DAILY_LIMIT:,} reached!")
         return counter, daily_withdrawn
 
-    account['balance'] -= amount
-    daily_withdrawn += amount
+    account['balance'] = account['balance'] - amount
+    daily_withdrawn = daily_withdrawn + amount
     
     print("✅ Withdrawal Successful!")
-    print(f"💰 Remaining daily limit : Rs. {DAILY_LIMIT - daily_withdrawn:,}")
+    remaining = DAILY_LIMIT - daily_withdrawn
+    print(f"💰 Remaining daily limit : Rs. {remaining}")
     
     if account['balance'] < LOW_BALANCE_LIMIT:
         print(f"⚠️  Low Balance Warning! Your balance is below Rs. {LOW_BALANCE_LIMIT:,}.")
@@ -79,18 +80,17 @@ def view_statement(transactions, account):
     print("---------------------------------------------------------------")
     
     for i, txn in enumerate(transactions, 1):
-        amt_str = f"Rs. {txn['amount']}"
-        bal_str = f"Rs. {txn['balance']:,}"
-        try:
-            dt_short = datetime.strptime(txn['date'], "%d-%m-%Y  %I:%M %p").strftime("%d-%m-%y %H:%M")
-        except ValueError:
-            dt_short = txn['date']
-        print(f" {i:<2} | {txn['txn_id']:<8} | {txn['type']:<8} | {amt_str:<9} | {dt_short} | {bal_str}")
+        print(f"  {i} | {txn['txn_id']} | {txn['type']} | Rs.{txn['amount']} | {txn['date']} | Rs.{txn['balance']}")
         
     print("---------------------------------------------------------------")
     
-    total_dep = sum(t['amount'] for t in transactions if t['type'] == 'Deposit')
-    total_with = sum(t['amount'] for t in transactions if t['type'] == 'Withdraw')
+    total_dep = 0
+    total_with = 0
+    for t in transactions:
+        if t['type'] == 'Deposit':
+            total_dep = total_dep + t['amount']
+        if t['type'] == 'Withdraw':
+            total_with = total_with + t['amount']
     print(f"  Total Deposited  : Rs. {total_dep:,}")
     print(f"  Total Withdrawn  : Rs. {total_with:,}")
     print(f"  Current Balance  : Rs. {account['balance']:,}")
@@ -101,19 +101,17 @@ def mini_statement(transactions):
         print("No transactions found.")
         return
         
-    mini_txns = transactions[-3:]
+    total = len(transactions)
+    if total >= 3:
+        mini_txns = transactions[total - 3 : total]
+    else:
+        mini_txns = transactions
     print("---------------------------------------------------------------")
     print("Sr  | TXN ID   | Type     | Amount    | Date & Time    | Balance")
     print("---------------------------------------------------------------")
     
     for i, txn in enumerate(mini_txns, 1):
-        amt_str = f"Rs. {txn['amount']}"
-        bal_str = f"Rs. {txn['balance']:,}"
-        try:
-            dt_short = datetime.strptime(txn['date'], "%d-%m-%Y  %I:%M %p").strftime("%d-%m-%y %H:%M")
-        except ValueError:
-            dt_short = txn['date']
-        print(f" {i:<2} | {txn['txn_id']:<8} | {txn['type']:<8} | {amt_str:<9} | {dt_short} | {bal_str}")
+        print(f"  {i} | {txn['txn_id']} | {txn['type']} | Rs.{txn['amount']} | {txn['date']} | Rs.{txn['balance']}")
         
     print("---------------------------------------------------------------")
 

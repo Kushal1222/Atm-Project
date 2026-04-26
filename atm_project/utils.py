@@ -3,12 +3,14 @@
 import time
 
 def validate_amount(amount):
+    # Check if amount is a valid number and greater than 100
     try:
         amt = int(amount)
         if amt > 100:
             return True
-        return False
-    except ValueError:
+        else:
+            return False
+    except:
         return False
 
 def check_pin(entered, actual):
